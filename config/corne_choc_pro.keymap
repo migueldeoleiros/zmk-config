@@ -7,11 +7,28 @@
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/bt.h>
 #include <dt-bindings/zmk/keys.h>
+#define ZMK_POINTING_DEFAULT_SCRL_VAL 200
 #include <dt-bindings/zmk/pointing.h>
 #include <dt-bindings/zmk/rgb.h>
 
 / {
     chosen { zmk,physical-layout = &default_layout; };
+
+    behaviors {
+        rot_scroll_vert: rot_scroll_vert {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&msc SCRL_DOWN>, <&msc SCRL_UP>;
+            tap-ms = <20>;
+        };
+
+        rot_scroll_horiz: rot_scroll_horiz {
+            compatible = "zmk,behavior-sensor-rotate";
+            #sensor-binding-cells = <0>;
+            bindings = <&msc SCRL_LEFT>, <&msc SCRL_RIGHT>;
+            tap-ms = <20>;
+        };
+    };
 };
 
 / {
@@ -100,7 +117,7 @@
                 <&inc_dec_kp 0 0>,
                 <&inc_dec_kp 0 0>,
                 <&inc_dec_kp 0 0>,
-                <&inc_dec_kp C_AC_SCROLL_DOWN C_AC_SCROLL_UP>;
+                <&rot_scroll_vert>;
         };
 
         extra_layer_2 {
@@ -111,6 +128,12 @@
 &trans  &trans  &trans  &trans  &trans  &trans                  &rgb_ug RGB_TOG  &rgb_ug RGB_BRD  &rgb_ug RGB_BRI  &rgb_ug RGB_HUI  &rgb_ug RGB_EFR  &rgb_ug RGB_EFF
                         &trans  &trans  &trans                  &trans           &trans           &trans
             >;
+
+            sensor-bindings =
+                <&inc_dec_kp 0 0>,
+                <&inc_dec_kp 0 0>,
+                <&inc_dec_kp 0 0>,
+                <&rot_scroll_horiz>;
         };
 
         extra_layer_3 {
